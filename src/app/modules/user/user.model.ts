@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema<IUser>({
     role: {
         type: String,
         enum: Object.values(Role),
-        default: Role.USER,
         required:true
     },
     phone: { type: String },

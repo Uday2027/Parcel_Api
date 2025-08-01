@@ -11,6 +11,8 @@ import { JwtPayload } from "jsonwebtoken";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = catchAsync(async(req: Request, res: Response, next: NextFunction)=> {
     const user = await UserServices.createUserService(req.body)
+
+    console.log(req.body);
     
     sendResponse(res, {
         success: true,

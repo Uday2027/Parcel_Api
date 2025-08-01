@@ -105,14 +105,94 @@ export const cancelParcel = (async (req: Request, res: Response) => {
 });
 
 
-export const getAllParcels = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
-    const users = await getAllParcel();
 
-    sendResponse(res, {
-        success: true,
-        Status: Status.OK,
-        message: "All Parcels Retrived!",
-        data: users.data
+export const getAllParcels = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const users = await getAllParcel();
 
-    })
-})
+  sendResponse(res, {
+    success: true,
+    Status: Status.OK,
+    message: "All Parcels Retrived!",
+    data: users.data
+
+  })
+});
+
+
+export const updateParcelStatus = async (req: Request, res: Response) => {
+  const parcelId = req.params.id;
+  const userId = req.user?._id;
+  const { status, note, location } = req.body;
+
+  try {
+    const parcel = await Parcel.findById(parcelId);
+    if (!parcel) return res.status(404).json({ message: 'Parcel not found' });
+
+    // Append to status log
+    parcel.statusLogs.push({
+      status,
+      updatedBy: userId,
+      note,
+      location,
+      timestamp: new Date(),
+    });
+
+    await parcel.save();
+
+    res.json({ success: true, message: 'Status updated' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Failed to update status' });
+  }
+};
+
+
+export const deliveryUpdate = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user || user.role !== 'DELIVERY_BOY') {
+    return res.status(403).json({ message: 'Only delivery personnel can update status' });
+  }
+
+  const { parcelId, stage } = req.body;
+  const status = stage === 'pickup' ? 'Dispatched' : stage === 'dropoff' ? 'Delivered' : null;
+  if (!status) return res.status(400).json({ message: 'Invalid delivery stage' });
+
+  const parcel = await Parcel.findById(parcelId);
+  if (!parcel) return res.status(404).json({ message: 'Parcel not found' });
+
+  parcel.statusLogs.push({ status, updatedBy: user._id, timestamp: new Date() });
+  await parcel.save();
+
+  res.status(200).json({ success: true, message: `Parcel marked as ${status}` });
+};
+
+
+export const publicTracking = async (req: Request, res: Response) => {
+  const { trackingId } = req.params;
+  const parcel = await Parcel.findOne({ trackingId });
+
+  if (!parcel) return res.status(404).json({ message: 'Tracking ID not found' });
+
+  res.json({
+    trackingId: parcel.trackingId,
+    currentStatus: parcel.statusLogs.slice(-1)[0]?.status,
+    history: parcel.statusLogs,
+  });
+};
+
+
+export const filterParcels = async (req: Request, res: Response) => {
+  const { status, from, to } = req.query;
+
+  const query: any = {};
+  if (status) query['statusLogs.status'] = status;
+  if (from || to) {
+    query['createdAt'] = {};
+    if (from) query['createdAt'].$gte = new Date(from as string);
+    if (to) query['createdAt'].$lte = new Date(to as string);
+  }
+
+  const parcels = await Parcel.find(query);
+  res.json({ success: true, parcels });
+};
+

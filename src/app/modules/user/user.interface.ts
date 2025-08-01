@@ -4,7 +4,8 @@ export enum Role{
     SUPER_ADMIN = "SUPER_ADMIN",
     ADMIN = "ADMIN",
     USER = "USER",
-    RECEIVER = "RECEIVER"
+    RECEIVER = "RECEIVER",
+    DELIVERY_BOY = "DELIVERY_BOY"
 
 }
 

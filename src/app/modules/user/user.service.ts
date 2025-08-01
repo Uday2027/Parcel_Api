@@ -7,28 +7,72 @@ import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 
 
+// const createUserService = async (payload: Partial<IUser>) => {
+//     const { email, password, role, ...rest } = payload;
+
+//     console.log(role);
+
+//     const isUserExist = await User.findOne({ email });
+
+//     if (isUserExist) {
+//         throw new AppError(Status.BAD_REQUEST, "User Already exist!")
+//     }
+
+//     const hasshedPass = await bcrypt.hash(password as string, 10);
+
+//     const authProvider:IauthProvider = {provider:"credentials", providerId:email as string} 
+
+//     const user = await User.create({
+//         email,
+//         password: hasshedPass,
+//         role,
+//         auth:[authProvider],
+//         ...rest
+//     })
+
+//     return user
+// }
 const createUserService = async (payload: Partial<IUser>) => {
-    const { email, password, ...rest } = payload;
+    const { email, password, role, ...rest } = payload;
 
+    console.log(payload);
+  
     const isUserExist = await User.findOne({ email });
-
     if (isUserExist) {
-        throw new AppError(Status.BAD_REQUEST, "User Already exist!")
+      throw new AppError(Status.BAD_REQUEST, "User Already exist!");
     }
-
-    const hasshedPass = await bcrypt.hash(password as string, 10);
-
-    const authProvider:IauthProvider = {provider:"credentials", providerId:email as string} 
-
+  
+    // Validate role if necessary (optional but recommended)
+    const allowedRoles = [
+      Role.USER,
+      Role.RECEIVER,
+      Role.DELIVERY_BOY,
+      Role.ADMIN,
+      Role.SUPER_ADMIN,
+    ];
+  
+    if (role && !allowedRoles.includes(role)) {
+      throw new AppError(Status.BAD_REQUEST, "Invalid role specified.");
+    }
+  
+    const hashedPass = await bcrypt.hash(password as string, 10);
+  
+    const authProvider: IauthProvider = {
+      provider: "credentials",
+      providerId: email as string,
+    };
+  
     const user = await User.create({
-        email,
-        password: hasshedPass,
-        auth:[authProvider],
-        ...rest
-    })
-
-    return user
-}
+      email,
+      password: hashedPass,
+      role: role || Role.USER, // <-- This line allows setting a valid custom role or defaults to USER
+      auth: [authProvider],
+      ...rest,
+    });
+  
+    return user;
+  };
+  
 
 const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
     
