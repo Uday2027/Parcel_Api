@@ -154,7 +154,7 @@ export const deliveryUpdate = async (req: Request, res: Response) => {
   }
 
   const { parcelId, stage } = req.body;
-  const status = stage === 'pickup' ? 'Dispatched' : stage === 'dropoff' ? 'Delivered' : null;
+  const status = stage === 'Pickup' ? 'Dispatched' : stage === 'Dropoff' ? 'Delivered' : null;
   if (!status) return res.status(400).json({ message: 'Invalid delivery stage' });
 
   const parcel = await Parcel.findById(parcelId);

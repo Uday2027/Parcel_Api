@@ -1,43 +1,3 @@
-// // import { Schema, model } from 'mongoose';
-
-// // const statusLogSchema = new Schema({
-// //   status: { type: String, enum: ['Requested', 'Dispatched', 'Delivered', 'Cancelled'], required: true },
-// //   timestamp: { type: Date, default: Date.now },
-// //   updatedBy: { type: String, required: true },
-// // });
-
-// // const parcelSchema = new Schema({
-// //   trackingId: { type: String, unique: true, default: () => `TRK-${Date.now()}` },
-// //   sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-// //   receiver: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-// //   weight: { type: Number, required: true },
-// //   status: { type: String, enum: ['Requested', 'Dispatched', 'Delivered', 'Cancelled'], default: 'Requested' },
-// //   statusLogs: [statusLogSchema],
-// // });
-
-// // export const Parcel = model('Parcel', parcelSchema);
-
-// import { Schema, model } from 'mongoose';
-
-// const statusLogSchema = new Schema({
-//   status: { type: String, enum: ['Requested', 'Approved', 'Dispatched', 'In Transit', 'Delivered', 'Cancelled', 'Blocked'], required: true },
-//   timestamp: { type: Date, default: Date.now },
-//   updatedBy: { type: String, required: true },
-//   note: { type: String },
-// });
-
-// const parcelSchema = new Schema({
-//   trackingId: { type: String, unique: true, default: () => `TRK-${Date.now()}` },
-//   sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-//   receiver: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-//   weight: { type: Number, required: true },
-//   status: { type: String, enum: ['Requested', 'Approved', 'Dispatched', 'In Transit', 'Delivered', 'Cancelled', 'Blocked'], default: 'Requested' },
-//   statusLogs: [statusLogSchema],
-// }, {
-//   timestamps: true,
-// });
-
-// export const Parcel = model('Parcel', parcelSchema);
 
 import mongoose, { Schema } from 'mongoose';
 import { IParcel, IStatusLog } from './parcel.interface';
@@ -45,9 +5,9 @@ import { IParcel, IStatusLog } from './parcel.interface';
 const statusLogSchema = new Schema<IStatusLog>({
   status: { type: String, enum: ['Requested', 'Approved', 'Dispatched', 'In Transit', 'Delivered', 'Cancelled'], required: true },
   note: { type: String },
-  updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'USER'},
   timestamp: { type: Date, default: Date.now },
-  location: { type: String }, // optional
+  location: { type: String },
 });
 
 const parcelSchema = new Schema<IParcel>({
@@ -67,7 +27,7 @@ const parcelSchema = new Schema<IParcel>({
   timestamps: true
 });
 
-// Generate tracking ID before saving
+
 parcelSchema.pre('save', function (next) {
   if (!this.trackingId) {
     const date = new Date();

@@ -37,7 +37,7 @@ export type ParcelStatus =
 export interface IStatusLog {
   status: ParcelStatus;
   note?: string;
-  updatedBy: Types.ObjectId; // User reference
+  updatedBy?: Types.ObjectId; 
   timestamp?: Date;
   location?: string;
 }
@@ -45,9 +45,9 @@ export interface IStatusLog {
 export interface IParcel {
   _id?: Types.ObjectId;
   trackingId?: string;
-  sender: Types.ObjectId; // User reference
-  receiver: Types.ObjectId; // User reference
-  type: string; // e.g., "Box", "Document"
+  sender: Types.ObjectId; 
+  receiver: Types.ObjectId; 
+  type: string; 
   weight: number;
   pickupAddress: string;
   deliveryAddress: string;

@@ -1,4 +1,3 @@
-
 import z from "zod";
 import { isActive, Role } from "./user.interface";
 
@@ -33,6 +32,7 @@ export const createUSerZodSchema = z.object({
     address: z.string({ invalid_type_error: "Address must be string!" })
             .max(200, { message: "Address can not exceed 200 characters!" })
             .optional(),
+    role: z.enum(Object.values(Role) as [string]),
     
 })
 
