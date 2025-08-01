@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { createParcel, getMyParcels, cancelParcel, getAllParcels, updateParcelStatus, deliveryUpdate, publicTracking, filterParcels } from './parcel.controller';
+import { createParcel, getMyParcels, cancelParcel, getAllParcels, updateParcelStatus, publicTracking, filterParcels } from './parcel.controller';
 import { cehckAuth } from "../../middlewares/checkAuth";
 import { Role } from '../user/user.interface';
+import { deliveryUpdate } from '../delivery/deliveryUpdate';
 
 export const parcelRouter = Router();
 

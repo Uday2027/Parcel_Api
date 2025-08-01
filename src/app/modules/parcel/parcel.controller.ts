@@ -7,7 +7,7 @@ import { getAllParcel } from './parcel.service';
 import Status from "http-status-codes"
 import mongoose from 'mongoose';
 
-// Fee calculation helper
+
 const calculateFee = (weight: number): number => {
   const ratePerKg = 50; //lets say
   return weight * ratePerKg;
@@ -17,7 +17,7 @@ export const createParcel = catchAsync(async (req: Request, res: Response, next:
   const { receiver, weight, type, pickupAddress, deliveryAddress, estimatedDeliveryDate } = req.body;
   const sender = req.user?.userId;
 
-  const fee = calculateFee(weight); // Calculate fee
+  const fee = calculateFee(weight); 
 
   
     const newParcel = await Parcel.create({
@@ -49,7 +49,7 @@ export const createParcel = catchAsync(async (req: Request, res: Response, next:
 
 export const getMyParcels = catchAsync(async (req: Request, res: Response, next:NextFunction)=> {
   const userId = req.user?.userId;
-  // try {
+ 
     const parcels = await Parcel.find({ sender: userId });
     sendResponse(res, {
       success: true,
@@ -58,10 +58,7 @@ export const getMyParcels = catchAsync(async (req: Request, res: Response, next:
       data: parcels
 
   })
-    // res.json({ success: true, data: parcels });
-  // } catch (err) {
-  //   res.status(500).json({ success: false, message: 'Failed to fetch parcels' });
-  // }
+    
 }) ;
 
 
@@ -74,20 +71,16 @@ export const cancelParcel = (async (req: Request, res: Response) => {
   try {
     const parcel = await Parcel.findById(parcelId);
 
-    // Check if parcel exists and belongs to the sender
     if (!parcel || parcel.sender.toString() !== userId.toString()) {
       return res.status(403).json({ success: false, message: 'Unauthorized or Parcel not found' });
     }
 
-    // Get latest status from statusLogs
     const lastStatus = parcel.statusLogs[parcel.statusLogs.length - 1]?.status;
 
-    // Prevent canceling dispatched or delivered parcels
     if (['Dispatched', 'Delivered'].includes(lastStatus)) {
       return res.status(400).json({ success: false, message: 'Cannot cancel after dispatch' });
     }
 
-    // Push cancellation status log
     parcel.statusLogs.push({
       status: 'Cancelled',
       updatedBy: new mongoose.Types.ObjectId(userId),
@@ -128,7 +121,6 @@ export const updateParcelStatus = async (req: Request, res: Response) => {
     const parcel = await Parcel.findById(parcelId);
     if (!parcel) return res.status(404).json({ message: 'Parcel not found' });
 
-    // Append to status log
     parcel.statusLogs.push({
       status,
       updatedBy: userId,
@@ -143,27 +135,6 @@ export const updateParcelStatus = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({ success: false, message: 'Failed to update status' });
   }
-};
-
-
-export const deliveryUpdate = async (req: Request, res: Response) => {
-  const user = req.user;
-
-  if (!user || user.role !== 'DELIVERY_BOY') {
-    return res.status(403).json({ message: 'Only delivery personnel can update status' });
-  }
-
-  const { parcelId, stage } = req.body;
-  const status = stage === 'Pickup' ? 'Dispatched' : stage === 'Dropoff' ? 'Delivered' : null;
-  if (!status) return res.status(400).json({ message: 'Invalid delivery stage' });
-
-  const parcel = await Parcel.findById(parcelId);
-  if (!parcel) return res.status(404).json({ message: 'Parcel not found' });
-
-  parcel.statusLogs.push({ status, updatedBy: user._id, timestamp: new Date() });
-  await parcel.save();
-
-  res.status(200).json({ success: true, message: `Parcel marked as ${status}` });
 };
 
 
