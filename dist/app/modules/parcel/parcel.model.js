@@ -46,7 +46,8 @@ const parcelSchema = new mongoose_1.Schema({
     trackingId: { type: String, unique: true },
     sender: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User', required: true },
     receiver: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User', required: true },
-    type: { type: String, required: true, }, // e.g., "Document", "Box"
+    phone: { type: Number, requierd: true },
+    type: { type: String, required: true, },
     weight: { type: Number, required: true },
     pickupAddress: { type: String, required: true },
     deliveryAddress: { type: String, required: true },

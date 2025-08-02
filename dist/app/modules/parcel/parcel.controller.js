@@ -25,12 +25,13 @@ const calculateFee = (weight) => {
 };
 exports.createParcel = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { receiver, weight, type, pickupAddress, deliveryAddress, estimatedDeliveryDate } = req.body;
+    const { receiver, phone, weight, type, pickupAddress, deliveryAddress, estimatedDeliveryDate } = req.body;
     const sender = (_a = req.user) === null || _a === void 0 ? void 0 : _a.userId;
     const fee = calculateFee(weight);
     const newParcel = yield parcel_model_1.Parcel.create({
         sender,
         receiver,
+        phone,
         type,
         weight,
         pickupAddress,
@@ -41,6 +42,7 @@ exports.createParcel = (0, catchAsync_1.default)((req, res, next) => __awaiter(v
             {
                 status: 'Requested',
                 updatedBy: sender,
+                location: pickupAddress
             },
         ],
     });
@@ -64,9 +66,7 @@ exports.getMyParcels = (0, catchAsync_1.default)((req, res, next) => __awaiter(v
 }));
 exports.cancelParcel = ((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
-    console.log(req.user);
     const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.userId;
-    console.log(req.params);
     const parcelId = req.params.id;
     try {
         const parcel = yield parcel_model_1.Parcel.findById(parcelId);
@@ -137,10 +137,11 @@ const publicTracking = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.publicTracking = publicTracking;
 const filterParcels = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { status, from, to } = req.query;
+    const { status, from, to } = req.body;
     const query = {};
-    if (status)
+    if (status) {
         query['statusLogs.status'] = status;
+    }
     if (from || to) {
         query['createdAt'] = {};
         if (from)
@@ -148,7 +149,12 @@ const filterParcels = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (to)
             query['createdAt'].$lte = new Date(to);
     }
-    const parcels = yield parcel_model_1.Parcel.find(query);
-    res.json({ success: true, parcels });
+    try {
+        const parcels = yield parcel_model_1.Parcel.find(query);
+        res.status(200).json({ success: true, parcels });
+    }
+    catch (error) {
+        res.status(500).json({ success: false, message: "Error while filtering parcels", error });
+    }
 });
 exports.filterParcels = filterParcels;

@@ -35,8 +35,6 @@ const createAdmin = catchAsync(async(req: Request, res: Response, next: NextFunc
 const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     
     const userId = req.params.id;
-    // const token = req.headers.authorization;
-    // const vefiedToken = verifyToken(token as string, envVars.JWT_ACCESS_TOKEN) as JwtPayload;
 
     const verifiedToken = req.user;
 

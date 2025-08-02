@@ -8,7 +8,7 @@ const user_interface_1 = require("../user/user.interface");
 const deliveryUpdate_1 = require("../delivery/deliveryUpdate");
 exports.parcelRouter = (0, express_1.Router)();
 exports.parcelRouter.post('/create', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SENDER), parcel_controller_1.createParcel);
-exports.parcelRouter.get('/my', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SENDER), parcel_controller_1.getMyParcels);
+exports.parcelRouter.get('/my', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.SENDER, user_interface_1.Role.RECEIVER), parcel_controller_1.getMyParcels);
 exports.parcelRouter.patch('/cancel/:id', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SENDER, user_interface_1.Role.SUPER_ADMIN), parcel_controller_1.cancelParcel);
 exports.parcelRouter.get("/all-parcel", (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), parcel_controller_1.getAllParcels);
 exports.parcelRouter.patch("/status/:id", (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), parcel_controller_1.updateParcelStatus);

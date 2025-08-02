@@ -6,7 +6,7 @@ import { deliveryUpdate } from '../delivery/deliveryUpdate';
 
 export const parcelRouter = Router();
 
-parcelRouter.post('/create', cehckAuth(Role.ADMIN, Role.SENDER), createParcel);
+parcelRouter.post('/create', cehckAuth(Role.ADMIN, Role.SENDER, Role.SUPER_ADMIN), createParcel);
 
 parcelRouter.get('/my', cehckAuth(Role.SENDER, Role.RECEIVER), getMyParcels);
 
@@ -20,7 +20,7 @@ parcelRouter.post('/delivery/update', cehckAuth(Role.DELIVERY_BOY, Role.ADMIN, R
 
 parcelRouter.get('/track/:trackingId', publicTracking);
 
-parcelRouter.get('/filter-parcel', cehckAuth(Role.ADMIN, Role.SUPER_ADMIN), filterParcels);
+parcelRouter.post('/filter-parcel', cehckAuth(Role.ADMIN, Role.SUPER_ADMIN), filterParcels);
 
 
 

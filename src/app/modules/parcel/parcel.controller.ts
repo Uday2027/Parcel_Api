@@ -7,7 +7,6 @@ import { getAllParcel } from './parcel.service';
 import Status from "http-status-codes"
 import mongoose from 'mongoose';
 
-
 const calculateFee = (weight: number): number => {
   const ratePerKg = 50; //lets say
   return weight * ratePerKg;
@@ -97,8 +96,6 @@ export const cancelParcel = (async (req: Request, res: Response) => {
   }
 });
 
-
-
 export const getAllParcels = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const users = await getAllParcel();
 
@@ -120,7 +117,7 @@ export const updateParcelStatus = async (req: Request, res: Response) => {
   try {
     const parcel = await Parcel.findById(parcelId);
     if (!parcel) return res.status(404).json({ message: 'Parcel not found' });
-
+    note
     parcel.statusLogs.push({
       status,
       updatedBy: userId,
