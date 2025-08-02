@@ -1,4 +1,3 @@
-````md
 # 🚚 Parcel Delivery System API
 
 A feature-rich, role-based **Parcel Delivery System** built with **Node.js**, **Express**, **MongoDB**, and **TypeScript**. It supports **JWT authentication**, **role-based authorization**, **real-time parcel tracking**, and **automated delivery updates**.
@@ -29,6 +28,7 @@ git clone https://github.com/your-username/parcel-delivery-system.git
 cd parcel-delivery-system
 npm install
 ```
+
 ````
 
 ### 🧪 Run the Project Locally
@@ -273,6 +273,4 @@ To all the developers who:
 This one’s for you.
 **Keep building. Keep dreaming. 🚀**
 
-```
-
-```
+````
