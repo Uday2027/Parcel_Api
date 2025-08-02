@@ -6,34 +6,12 @@ import bcrypt from "bcryptjs"
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 
-
-// const createUserService = async (payload: Partial<IUser>) => {
-//     const { email, password, role, ...rest } = payload;
-
-//     console.log(role);
-
-//     const isUserExist = await User.findOne({ email });
-
-//     if (isUserExist) {
-//         throw new AppError(Status.BAD_REQUEST, "User Already exist!")
-//     }
-
-//     const hasshedPass = await bcrypt.hash(password as string, 10);
-
-//     const authProvider:IauthProvider = {provider:"credentials", providerId:email as string} 
-
-//     const user = await User.create({
-//         email,
-//         password: hasshedPass,
-//         role,
-//         auth:[authProvider],
-//         ...rest
-//     })
-
-//     return user
-// }
 const createUserService = async (payload: Partial<IUser>) => {
     const { email, password, role, ...rest } = payload;
+
+    if (role === "ADMIN") {
+        throw new AppError(Status.BAD_REQUEST,"You are not allowed to Create ADMIN!");
+    }
   
     const isUserExist = await User.findOne({ email });
     if (isUserExist) {
@@ -41,11 +19,9 @@ const createUserService = async (payload: Partial<IUser>) => {
     }
   
     const allowedRoles = [
-      Role.USER,
+      Role.SENDER,
       Role.RECEIVER,
       Role.DELIVERY_BOY,
-      Role.ADMIN,
-      Role.SUPER_ADMIN,
     ];
   
     if (role && !allowedRoles.includes(role)) {
@@ -62,7 +38,7 @@ const createUserService = async (payload: Partial<IUser>) => {
     const user = await User.create({
       email,
       password: hashedPass,
-      role: role || Role.USER, // <-- This line allows setting a valid custom role or defaults to USER
+      role: role || Role.SENDER, 
       auth: [authProvider],
       ...rest,
     });
@@ -70,6 +46,40 @@ const createUserService = async (payload: Partial<IUser>) => {
     return user;
   };
   
+  const createAdminService = async (payload: Partial<IUser>) => {
+    const { email, password, role, ...rest } = payload;
+
+  
+    const isAdminExist = await User.findOne({ email });
+    if (isAdminExist) {
+      throw new AppError(Status.BAD_REQUEST, "Admin Already exist!");
+    }
+  
+    const allowedRoles = [
+      Role.ADMIN
+    ];
+  
+    if (role && !allowedRoles.includes(role)) {
+      throw new AppError(Status.BAD_REQUEST, "Invalid role specified.");
+    }
+  
+    const hashedPass = await bcrypt.hash(password as string, 10);
+  
+    const authProvider: IauthProvider = {
+      provider: "credentials",
+      providerId: email as string,
+    };
+  
+    const user = await User.create({
+      email,
+      password: hashedPass,
+      role: Role.ADMIN, 
+      auth: [authProvider],
+      ...rest,
+    });
+  
+    return user;
+  };
 
 const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
     
@@ -81,7 +91,7 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken:
     }
 
     if (payload.role) {
-        if (decodedToken.role === Role.USER || decodedToken.role === Role.RECEIVER) {
+        if (decodedToken.role === Role.SENDER || decodedToken.role === Role.RECEIVER) {
             throw new AppError(Status.FORBIDDEN, "You are not authorized!");
         }
 
@@ -123,7 +133,8 @@ const getAllUsers = async () => {
 const UserServices = {
     createUserService,
     getAllUsers,
-    updateUser
+    updateUser,
+    createAdminService
 }
 
 export default UserServices;

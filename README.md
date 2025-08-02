@@ -2,7 +2,7 @@ Here’s an **enhanced, juicy, and developer-friendly `README.md`** for your **P
 
 ---
 
-```md
+````md
 # 📦 Parcel Delivery System API
 
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-green)](https://nodejs.org/)
@@ -47,27 +47,6 @@ The **Parcel Delivery System API** is a scalable, secure, and developer-friendly
 
 ---
 
-## 📁 Folder Structure
-```
-
-src/
-│
-├── app/
-│ ├── modules/
-│ │ ├── auth/ # Auth (register/login)
-│ │ ├── user/ # User-related logic
-│ │ ├── parcel/ # Parcel creation & tracking
-│ │ └── delivery/ # Delivery status updates
-│ ├── middlewares/ # Auth, error, validation
-│ ├── utils/ # Common utilities
-│ └── config/ # Environment & DB config
-│
-├── app.ts
-├── server.ts
-└── routes.ts
-
-````
-
 ---
 
 ## 🔐 Authentication & Roles
@@ -83,6 +62,7 @@ src/
   "password": "StrongPass123",
   "role": "DELIVERY_BOY"
 }
+```
 ````
 
 📌 Roles:

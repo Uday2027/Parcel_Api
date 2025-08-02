@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 export enum Role{
     SUPER_ADMIN = "SUPER_ADMIN",
     ADMIN = "ADMIN",
-    USER = "USER",
+    SENDER = "SENDER",
     RECEIVER = "RECEIVER",
     DELIVERY_BOY = "DELIVERY_BOY"
 
@@ -31,6 +31,6 @@ export interface IUser  {
     isDeleted?: string
     isActive?: isActive
     isVerified?: boolean
-    role: Role;
+    role?: Role;
     auth: IauthProvider[]
 }

@@ -6,11 +6,11 @@ import { deliveryUpdate } from '../delivery/deliveryUpdate';
 
 export const parcelRouter = Router();
 
-parcelRouter.post('/create', cehckAuth(Role.ADMIN, Role.USER), createParcel);
+parcelRouter.post('/create', cehckAuth(Role.ADMIN, Role.SENDER), createParcel);
 
-parcelRouter.get('/my', cehckAuth(Role.ADMIN, Role.USER), getMyParcels);
+parcelRouter.get('/my', cehckAuth(Role.ADMIN, Role.SENDER), getMyParcels);
 
-parcelRouter.patch('/cancel/:id', cehckAuth(Role.ADMIN, Role.USER, Role.SUPER_ADMIN), cancelParcel);
+parcelRouter.patch('/cancel/:id', cehckAuth(Role.ADMIN, Role.SENDER, Role.SUPER_ADMIN), cancelParcel);
 
 parcelRouter.get("/all-parcel", cehckAuth(Role.ADMIN, Role.SUPER_ADMIN), getAllParcels);
 

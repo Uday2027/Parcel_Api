@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.parcelRouter = void 0;
+const express_1 = require("express");
+const parcel_controller_1 = require("./parcel.controller");
+const checkAuth_1 = require("../../middlewares/checkAuth");
+const user_interface_1 = require("../user/user.interface");
+const deliveryUpdate_1 = require("../delivery/deliveryUpdate");
+exports.parcelRouter = (0, express_1.Router)();
+exports.parcelRouter.post('/create', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SENDER), parcel_controller_1.createParcel);
+exports.parcelRouter.get('/my', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SENDER), parcel_controller_1.getMyParcels);
+exports.parcelRouter.patch('/cancel/:id', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SENDER, user_interface_1.Role.SUPER_ADMIN), parcel_controller_1.cancelParcel);
+exports.parcelRouter.get("/all-parcel", (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), parcel_controller_1.getAllParcels);
+exports.parcelRouter.patch("/status/:id", (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), parcel_controller_1.updateParcelStatus);
+exports.parcelRouter.post('/delivery/update', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.DELIVERY_BOY, user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), deliveryUpdate_1.deliveryUpdate);
+exports.parcelRouter.get('/track/:trackingId', parcel_controller_1.publicTracking);
+exports.parcelRouter.get('/filter-parcel', (0, checkAuth_1.cehckAuth)(user_interface_1.Role.ADMIN, user_interface_1.Role.SUPER_ADMIN), parcel_controller_1.filterParcels);

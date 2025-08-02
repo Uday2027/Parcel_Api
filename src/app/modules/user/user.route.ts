@@ -13,6 +13,7 @@ const router = Router();
 
 
 router.post("/register", validateRequest(createUSerZodSchema), userControllers.createUser);
+router.post("/register-admin", cehckAuth(Role.SUPER_ADMIN), userControllers.createAdmin)
 router.get("/all-users", cehckAuth(Role.ADMIN, Role.SUPER_ADMIN), userControllers.getAllUsers);
 router.patch("/:id", cehckAuth(...Object.values(Role)), userControllers.updateUser);
 

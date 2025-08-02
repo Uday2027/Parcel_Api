@@ -11,13 +11,22 @@ import { JwtPayload } from "jsonwebtoken";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = catchAsync(async(req: Request, res: Response, next: NextFunction)=> {
     const user = await UserServices.createUserService(req.body)
-
-    console.log(req.body);
     
     sendResponse(res, {
         success: true,
         Status: Status.CREATED,
         message: "User Created Successfully!",
+        data: user,
+    })
+})
+
+const createAdmin = catchAsync(async(req: Request, res: Response, next: NextFunction)=> {
+    const user = await UserServices.createAdminService(req.body)
+    
+    sendResponse(res, {
+        success: true,
+        Status: Status.CREATED,
+        message: "Admin Created Successfully!",
         data: user,
     })
 })
@@ -59,5 +68,6 @@ const getAllUsers = catchAsync(async(req: Request, res: Response, next: NextFunc
 export const userControllers = {
     createUser,
     getAllUsers,
-    updateUser
+    updateUser,
+    createAdmin
 }
