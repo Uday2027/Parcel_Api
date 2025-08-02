@@ -29,8 +29,6 @@ cd parcel-delivery-system
 npm install
 ```
 
-````
-
 ### 🧪 Run the Project Locally
 
 ```bash
@@ -273,4 +271,6 @@ To all the developers who:
 This one’s for you.
 **Keep building. Keep dreaming. 🚀**
 
-````
+```
+
+```
