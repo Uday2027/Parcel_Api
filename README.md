@@ -275,5 +275,4 @@ This one’s for you.
 
 ```
 
-Let me know if you want me to export it as a `.md` file or push it to a GitHub repo for you.
 ```
