@@ -136,22 +136,22 @@ npm install
 Create a `.env` file in the root of the project and paste the following:
 
 ```env
-PORT=5000
-MONGO_URI=mongodb+srv://2021331002:admin1234@cluster0.ajf4leg.mongodb.net/parcel-api
-NODE_ENV=development
+PORT=
+MONGO_URI=mongodb.....................
+NODE_ENV=
 
 # JWT
-JWT_ACCESS_TOKEN=access_secret
-JWT_ACCESS_EXPIRESIN=1d
-JWT_REFRESH_TOKEN=jwt_refresh_secret
-JWT_REFRESH_EXPIRESIN=30d
+JWT_ACCESS_TOKEN=
+JWT_ACCESS_EXPIRESIN=
+JWT_REFRESH_TOKEN=
+JWT_REFRESH_EXPIRESIN=
 
 # BCRYPT
-BCRYPT_SALT_ROUND=10
+BCRYPT_SALT_ROUND=
 
 # Super Admin Credentials
-SUPER_ADMIN_EMAIL=superadmin@gmail.com
-SUPER_ADMIN_PASSWORD=123456789
+SUPER_ADMIN_EMAIL=
+SUPER_ADMIN_PASSWORD=
 ```
 
 ### 4️⃣ Start the Server

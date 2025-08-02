@@ -33,6 +33,7 @@ export const createParcel = catchAsync(async (req: Request, res: Response, next:
         {
           status: 'Requested',
           updatedBy: sender,
+          location: pickupAddress
         } as IStatusLog,
       ],
     });
@@ -63,9 +64,7 @@ export const getMyParcels = catchAsync(async (req: Request, res: Response, next:
 
 
 export const cancelParcel = (async (req: Request, res: Response) => {
-  console.log(req.user);
   const userId = req.user?.userId;
-  console.log(req.params);
   const parcelId = req.params.id;
 
   try {
@@ -153,17 +152,26 @@ export const publicTracking = async (req: Request, res: Response) => {
 
 
 export const filterParcels = async (req: Request, res: Response) => {
-  const { status, from, to } = req.query;
+  const { status, from, to } = req.body;
 
   const query: any = {};
-  if (status) query['statusLogs.status'] = status;
-  if (from || to) {
-    query['createdAt'] = {};
-    if (from) query['createdAt'].$gte = new Date(from as string);
-    if (to) query['createdAt'].$lte = new Date(to as string);
+
+  if (status) {
+    query['statusLogs.status'] = status;
   }
 
-  const parcels = await Parcel.find(query);
-  res.json({ success: true, parcels });
+  if (from || to) {
+    query['createdAt'] = {};
+    if (from) query['createdAt'].$gte = new Date(from);
+    if (to) query['createdAt'].$lte = new Date(to);
+  }
+
+  try {
+    const parcels = await Parcel.find(query);
+    res.status(200).json({ success: true, parcels });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error while filtering parcels", error });
+  }
 };
+
 
