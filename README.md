@@ -217,18 +217,7 @@ npm start
 
 ## 📬 Postman Collection
 
-📥 Want to test the API quickly? Import the [Postman Collection](./postman_collection.json) _(create it manually if you haven't yet)_
-
----
-
-## 📌 TODOs
-
-- [ ] 📄 Add Swagger API docs
-- [ ] 📱 Add notification module (SMS/email)
-- [ ] 🔔 WebSocket push for real-time updates
-- [ ] 📊 Admin dashboard analytics
-
----
+## 📥 Want to test the API quickly? Import the [Postman Collection](./postman_collection.json) _(create it manually if you haven't yet)_
 
 ## 🧑‍💻 Author
 

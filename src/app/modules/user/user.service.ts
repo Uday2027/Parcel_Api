@@ -34,15 +34,12 @@ import { envVars } from "../../config/env";
 // }
 const createUserService = async (payload: Partial<IUser>) => {
     const { email, password, role, ...rest } = payload;
-
-    console.log(payload);
   
     const isUserExist = await User.findOne({ email });
     if (isUserExist) {
       throw new AppError(Status.BAD_REQUEST, "User Already exist!");
     }
   
-    // Validate role if necessary (optional but recommended)
     const allowedRoles = [
       Role.USER,
       Role.RECEIVER,
