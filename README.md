@@ -234,7 +234,7 @@ Authorization: Bearer <your_access_token>
 
 **Zubayer Hossain Uday**
 
-- 🧑‍💻 GitHub: [@ZubayerUday](https://github.com/Uday2027)
+- 🧑‍💻 GitHub: [@Uday2027](https://github.com/Uday2027)
 - 📘 Facebook: [Zubayer Hossain Uday](https://facebook.com/Y0uNeverKn0w)
 
 ---

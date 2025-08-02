@@ -8,7 +8,7 @@ export const parcelRouter = Router();
 
 parcelRouter.post('/create', cehckAuth(Role.ADMIN, Role.SENDER), createParcel);
 
-parcelRouter.get('/my', cehckAuth(Role.ADMIN, Role.SENDER), getMyParcels);
+parcelRouter.get('/my', cehckAuth(Role.SENDER, Role.RECEIVER), getMyParcels);
 
 parcelRouter.patch('/cancel/:id', cehckAuth(Role.ADMIN, Role.SENDER, Role.SUPER_ADMIN), cancelParcel);
 
