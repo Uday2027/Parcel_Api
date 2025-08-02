@@ -14,7 +14,7 @@ const calculateFee = (weight: number): number => {
 };
 
 export const createParcel = catchAsync(async (req: Request, res: Response, next:NextFunction) => {
-  const { receiver, weight, type, pickupAddress, deliveryAddress, estimatedDeliveryDate } = req.body;
+  const { receiver, phone, weight, type, pickupAddress, deliveryAddress, estimatedDeliveryDate } = req.body;
   const sender = req.user?.userId;
 
   const fee = calculateFee(weight); 
@@ -23,6 +23,7 @@ export const createParcel = catchAsync(async (req: Request, res: Response, next:
     const newParcel = await Parcel.create({
       sender,
       receiver,
+      phone,
       type,
       weight,
       pickupAddress,

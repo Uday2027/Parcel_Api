@@ -21,6 +21,7 @@ export interface IParcel {
   trackingId?: string;
   sender: Types.ObjectId; 
   receiver: Types.ObjectId; 
+  phone: number;
   type: string; 
   weight: number;
   pickupAddress: string;

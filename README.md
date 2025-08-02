@@ -1,143 +1,45 @@
-Here is the complete `README.md` content, written in a single Markdown file — just copy and paste it:
+# 🚚 Parcel Delivery System API
+
+A feature-rich, role-based **Parcel Delivery System** built with **Node.js**, **Express**, **MongoDB**, and **TypeScript**. The system supports **JWT authentication**, **role-based authorization**, **parcel tracking**, **status logs**, and **real-time delivery updates** with delivery boy access.
 
 ---
 
-````markdown
-# 📦 Parcel Delivery System API
+## 🌐 [Live URL](https://parcel-delivery-system-eosin.vercel.app/)
 
-A modern backend API built with **Express.js**, **TypeScript**, and **MongoDB**, designed to manage parcel delivery operations with robust role-based access control, tracking, and lifecycle management.
-
----
-
-## 🚀 Features
-
-- 🔐 JWT-based Authentication (Access & Refresh Tokens)
-- 👥 Role-Based Access Control
-  - `SUPER_ADMIN`, `ADMIN`, `SENDER`, `RECEIVER`, `DELIVERY_BOY`
-- 📦 Parcel Management
-  - Create, track, cancel, and filter parcels
-- 🚛 Delivery Boy Workflow
-  - Live delivery status updates (Pickup, Drop-off)
-- 🧾 Status Logging (with timestamps, notes, and location support)
-- 🛠️ User Registration & Admin Management
-- 🌐 Public Parcel Tracking
+> Deployment-ready backend for any delivery-based application.
 
 ---
 
-## 🛠️ Tech Stack
+## 🔧 Technologies Used
 
-- **Backend:** Node.js, Express.js
-- **Language:** TypeScript
-- **Database:** MongoDB (Mongoose ODM)
-- **Security:** JWT, Bcrypt, RBAC
-- **Validation:** Zod
-
----
-
-## 🔑 User Roles & Access
-
-| Role         | Permissions                                                    |
-| ------------ | -------------------------------------------------------------- |
-| SUPER_ADMIN  | Full access to all admin-level actions and user/parcel control |
-| ADMIN        | Manage users and parcels                                       |
-| SENDER       | Create and manage their own parcels                            |
-| RECEIVER     | View received parcels                                          |
-| DELIVERY_BOY | Update parcel delivery stages (Dispatched, Delivered)          |
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB (Mongoose)
+- JWT (Access & Refresh Tokens)
+- bcrypt.js (Password Hashing)
 
 ---
 
-## 🔐 Authentication
-
-This API uses a secure token-based authentication system:
-
-- **JWT Access Token**
-- **JWT Refresh Token**
-- Passwords hashed using **bcrypt**
-
----
-
-## 🔄 Parcel Lifecycle
-
-A parcel moves through the following statuses:
-
-- `Requested`
-- `Approved`
-- `Dispatched`
-- `In Transit`
-- `Delivered`
-- `Cancelled`
-
-Each status change is logged with metadata (timestamp, updatedBy, note, location).
-
----
-
-## 📬 API Endpoints Overview
-
-### 🔑 Auth
-
-- `POST /api/v1/auth/register` — Register as a user
-- `POST /api/v1/auth/login` — Login and receive tokens
-
-### 👥 User
-
-- `POST /api/v1/user/register` — Register new user
-- `POST /api/v1/user/register-admin` — Register admin (SUPER_ADMIN only)
-- `GET /api/v1/user/all-users` — Get all users (ADMIN, SUPER_ADMIN)
-- `PATCH /api/v1/user/:id` — Update user (Authenticated)
-
-### 📦 Parcel
-
-- `POST /api/v1/parcel/create` — Create new parcel (ADMIN, SENDER)
-- `GET /api/v1/parcel/my` — Get own parcels (ADMIN, SENDER)
-- `PATCH /api/v1/parcel/cancel/:id` — Cancel parcel (ADMIN, SENDER, SUPER_ADMIN)
-- `GET /api/v1/parcel/all-parcel` — Get all parcels (ADMIN, SUPER_ADMIN)
-- `GET /api/v1/parcel/track/:trackingId` — Track parcel publicly
-- `PATCH /api/v1/parcel/status/:id` — Update parcel status (ADMIN, SUPER_ADMIN)
-- `POST /api/v1/parcel/delivery/update` — Delivery boy updates (DELIVERY_BOY)
-
----
-
-## 📦 Delivery Boy Parcel Update Example
-
-**Endpoint:** `POST /api/v1/parcel/delivery/update`  
-**Access:** `DELIVERY_BOY`, `ADMIN`, `SUPER_ADMIN`
-
-**Request Body:**
-
-```json
-{
-  "parcelId": "64c889fce24a1e1234567890",
-  "status": "Delivered",
-  "note": "Parcel handed to recipient at the door",
-  "location": "Dhaka, Bangladesh"
-}
-```
-````
-
----
-
-## 🧪 Getting Started Locally
-
-### 1️⃣ Clone the Repository
+## 📦 Installation & Setup
 
 ```bash
 git clone https://github.com/your-username/parcel-delivery-system.git
 cd parcel-delivery-system
-```
-
-### 2️⃣ Install Dependencies
-
-```bash
 npm install
 ```
 
-### 3️⃣ Create `.env` File
+### 🧪 Run Locally
 
-Create a `.env` file in the root of the project and paste the following:
+```bash
+npm run dev
+```
+
+### 🔐 .env Example
 
 ```env
 PORT=
-MONGO_URI=mongodb.....................
+MONGO_URI=
 NODE_ENV=
 
 # JWT
@@ -146,50 +48,157 @@ JWT_ACCESS_EXPIRESIN=
 JWT_REFRESH_TOKEN=
 JWT_REFRESH_EXPIRESIN=
 
-# BCRYPT
+# Bcrypt
 BCRYPT_SALT_ROUND=
 
-# Super Admin Credentials
-SUPER_ADMIN_EMAIL=
-SUPER_ADMIN_PASSWORD=
+# Super Admin (Auto-generated)
+SUPER_ADMIN_EMAIL=superadmin@gmail.com
+SUPER_ADMIN_PASSWORD=123456789
 ```
 
-### 4️⃣ Start the Server
+---
 
-```bash
-npm run dev
+## 🔑 Roles
+
+- `USER`
+- `RECEIVER`
+- `DELIVERY_BOY`
+- `ADMIN`
+- `SUPER_ADMIN`
+
+---
+
+## 📮 API Endpoints
+
+> Base URL: `http://localhost:5000/api/v1`
+
+### ✅ Auth Routes
+
+#### 🔹 Register
+
+`POST /auth/register`
+
+```json
+{
+  "name": "Zubayer Hossain",
+  "email": "zubayer@example.com",
+  "password": "123456",
+  "role": "SENDER"
+}
 ```
 
-> Server will be running at `http://localhost:5000`
+#### 🔹 Login
+
+`POST /auth/login`
+
+```json
+{
+  "email": "zubayer@example.com",
+  "password": "Aa1@23456"
+}
+```
+
+#### 🔹 Refresh Token
+
+`POST /auth/refresh-token`
+
+```json
+{
+  "refreshToken": "your_refresh_token"
+}
+```
 
 ---
 
-## 🧪 Testing
+### 📦 Parcel Routes
 
-Use [Postman](https://www.postman.com/) or [Thunder Client](https://www.thunderclient.com/) for API testing.
+#### 🔹 Create Parcel
 
-Recommended collections:
+`POST /parcel/create`
 
-- ✅ Authentication: Register, Login, Token refresh
-- 📦 Parcel: Create, update, cancel, track
-- 🛡️ Role-based: User access tests
-- 🚚 Delivery: Parcel delivery updates
+```json
+{
+  "receiver": "Md Fahim",
+  "phone": "01xxxxxxxxx",
+  "weight": 5,
+  "pickupAddress": "Dhaka",
+  "destinationAddress": "Chittagong",
+  "type": "box",
+  "estimatedDeliveryDate": "2025-08-05"
+}
+```
+
+#### 🔹 Get My Parcels (Sender/Receiver)
+
+`GET /parcel/my-parcels`
+**(Requires Auth)**
 
 ---
 
-## 🧑‍💻 Contributing
+### 📤 Parcel Delivery Routes
 
-1. Fork the repo
-2. Create your feature branch: `git checkout -b feature/awesome-feature`
-3. Commit your changes: `git commit -m 'feat: add awesome feature'`
-4. Push to the branch: `git push origin feature/awesome-feature`
-5. Open a pull request 🚀
+#### 🔹 Update Parcel Delivery (Delivery Boy/Admin/Super Admin)
+
+`POST /parcel/delivery/update`
+
+```json
+{
+  "parcelId": "662b3ef15d31281e7aa29f12",
+  "status": "Delivered",
+  "Location": "Dhaka"
+}
+```
 
 ---
 
-## 🧾 License
+### 🔍 Admin Routes
 
-This project is open source and available under the [MIT License](LICENSE).
+#### 🔹 Get All Parcels
+
+`GET /parcel/all`
+**(Role: ADMIN / SUPER_ADMIN)**
+
+#### 🔹 Filter Parcels (By status/date)
+
+`POST /parcel/filter-parcel`
+
+```json
+{
+  "status": "Delivered",
+  "from": "2024-01-01",
+  "to": "2024-06-30"
+}
+```
+
+---
+
+## 🔐 Protected Routes
+
+All protected routes require a **Bearer Token**:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+---
+
+## 🛂 Middleware
+
+- `checkAuth(...roles)` – verifies access by matching user roles.
+
+---
+
+## ⚠️ Error Handling
+
+All routes follow a structured error response format:
+
+```json
+{
+  "success": false,
+  "message": "Error message here",
+  "error": {}
+}
+```
 
 ---
 
@@ -201,3 +210,31 @@ This project is open source and available under the [MIT License](LICENSE).
 - 📘 Facebook: [Zubayer Hossain Uday](https://facebook.com/Y0uNeverKn0w)
 
 ---
+
+## 📃 License
+
+This project is open source and free to use under the MIT license.
+
+---
+
+## 💭 Final Thoughts
+
+This backend system was handcrafted with:
+
+- ☕ countless cups of coffee,
+- 💤 sleepy eyes at 3 AM,
+- 📦 actual parcels stacked on the table (for inspiration),
+- 💡 spontaneous ideas turned into endpoints,
+- and 💻 a keyboard that has seen too much emotion.
+
+If this project helped you, made you smile, or saved you a deadline — consider giving it a ⭐ on GitHub.
+
+Remember, great software doesn’t always start with a perfect plan... sometimes it starts with a tired developer and a strong desire to just **make it work**.
+
+---
+
+## 🙏 Special Thanks
+
+To all the devs who’ve ever screamed at their terminal and kept going — this one’s for you.
+
+Stay curious. Stay building. 🚀

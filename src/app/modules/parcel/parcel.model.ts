@@ -14,7 +14,8 @@ const parcelSchema = new Schema<IParcel>({
   trackingId: { type: String, unique: true },
   sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  type: { type: String, required: true, }, // e.g., "Document", "Box"
+  phone: {type: Number, requierd:true},
+  type: { type: String, required: true, }, 
   weight: { type: Number, required: true },
   pickupAddress: { type: String, required: true },
   deliveryAddress: { type: String, required: true },
