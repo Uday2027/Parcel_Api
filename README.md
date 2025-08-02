@@ -192,3 +192,12 @@ Recommended collections:
 This project is open source and available under the [MIT License](LICENSE).
 
 ---
+
+## 👤 Author
+
+**Zubayer Hossain Uday**
+
+- 💼 GitHub: [@ZubayerUday](https://github.com/Uday2027)
+- 📘 Facebook: [Zubayer Hossain Uday](https://facebook.com/Y0uNeverKn0w)
+
+---
